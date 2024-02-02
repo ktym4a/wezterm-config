@@ -9,7 +9,7 @@ local function get_git_branch(cwd_uri)
     if success and success2 then
         local branch = stdout:sub(1, -2)
         local user = stdout2:sub(1, -2)
-        return wezterm.nerdfonts.mdi_source_branch .. ' ' .. branch .. '/' .. user
+        return wezterm.nerdfonts.md_source_branch .. ' ' .. branch .. '/' .. user
     end
 end
 
@@ -27,25 +27,16 @@ wezterm.on("update-right-status", function(window, pane)
     local overrides = {}
 
     local cwd_uri = pane:get_current_working_dir()
-    if cwd_uri then
-        cwd_uri = cwd_uri:sub(8);
-        local slash = cwd_uri:find("/")
-        local cwd = ""
-        local gitBranch = ""
-        local gitUser = ""
 
+    local cwd = ""
+    local gitBranch = ""
+    cwd = shorten_home_dir(cwd_uri.file_path)
+    gitBranch = get_git_branch(cwd_uri.file_path)
 
-        if slash then
-            cwd = cwd_uri:sub(slash)
-            cwd = shorten_home_dir(cwd_uri)
-            gitBranch = get_git_branch(cwd_uri)
+    table.insert(cells, cwd);
 
-            table.insert(cells, cwd);
-
-            if gitBranch then
-                table.insert(cells, gitBranch);
-            end
-        end
+    if gitBranch then
+        table.insert(cells, gitBranch);
     end
 
     local date = wezterm.strftime("%H:%M %a");

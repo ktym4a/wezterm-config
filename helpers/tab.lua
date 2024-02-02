@@ -24,8 +24,8 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
         vim = wezterm.nerdfonts.custom_vim,
         bash = wezterm.nerdfonts.dev_terminal,
         zsh = wezterm.nerdfonts.dev_terminal,
-        ssh = wezterm.nerdfonts.mdi_server,
-        top = wezterm.nerdfonts.mdi_monitor,
+        ssh = wezterm.nerdfonts.md_server,
+        top = wezterm.nerdfonts.md_monitor,
         docker = wezterm.nerdfonts.dev_docker,
         node = wezterm.nerdfonts.dev_nodejs_small
     }
@@ -35,10 +35,11 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     end
 
     local pane = tab.active_pane
-    local process_name = basename(pane.foreground_process_name)
-    local domain_name = pane.domain_name
+    local process_name = basename(tostring(pane.foreground_process_name))
+    local domain_name = tostring(pane.domain_name)
 
-    local cwd = basename(pane.current_working_dir)
+    local cwd = basename(tostring(pane.current_working_dir))
+
 
     if domain_name ~= "local" or process_name == "ssh" then
         process_name = 'ssh'
